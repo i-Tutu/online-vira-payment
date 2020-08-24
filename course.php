@@ -1,4 +1,29 @@
-<!doctype html>
+
+<?php
+  // Initialize the session
+  session_start();
+
+   $alerter = "";
+
+  // Include config file
+  require_once "config.php";
+
+
+  //Insert into course table 
+$checkbox1 = $_POST['optradio'] ;  
+if ($_POST["Submit" ]=="Submit")  
+{  
+for ($i=0; $i<sizeof ($checkbox1);$i++) {  
+$query="INSERT INTO courses VALUES ('".$checkbox1[$i]. "')";  
+mysql_query($query) or die(mysql_error());  
+}  
+echo "Record is inserted";  
+}  
+
+?>
+
+<!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -79,41 +104,56 @@
           </div>
         </nav>
 
+        <!-- Alert -->
+            <?php 
+              if ($alerter == "success") {
+              
+            ?>
+        <div class="alert alert-success mt-1 mr-5 ml-5">
+          <a href="display.php" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Succesfully!</strong> Saved 
+        </div>
+          <?php
+            }
+          ?>
+
 <main role="main" class="container mt-5">
   <div class="jumbotron justify-content-between align-items-end">
     <!-- <h1>Courses Available</h1>
     <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll, it will remain fixed to the top of your browser’s viewport.</p>
     <a class="btn btn-lg btn-primary" href="../components/navbar/" role="button">View navbar docs &raquo;</a> -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <ul class="list-group">
             <h4><li class="list-group-item active text-center">Courses Available</li></h4>
             <small><li class="list-group-item active text-center">Please register all courses</li></small>  
             <li class="list-group-item d-flex justify-content-between align-items-center">Graphic Design
               <!-- <a href="#" id="add1" class="badge badge-primary">Add</a> -->
-             <label><input type="checkbox" name="optradio"></label>
+             <label><input type="checkbox" name="optradio" value="Graphic Design"></label>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">Ethical Hacking
               <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio"></label>
+              <label><input type="checkbox" name="optradio" value="Ethical Hacking"></label>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">Web Development
               <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio"></label>
+              <label><input type="checkbox" name="optradio" value="Web Development"></label>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">Switching and Routing
               <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio"></label>
+              <label><input type="checkbox" name="optradio" value="Switching and Routing"></label>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">Hardware
               <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio"></label>
+              <label><input type="checkbox" name="optradio" value="Hardware"></label>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">Satellite Installation
               <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio"></label>
+              <label><input type="checkbox" name="optradio" value="Satellite Installation"></label>
             </li>
           </ul>
 
         <button class="btn btn-primary text-center mt-5">Confirm</button>
+    </form>
   </div>
 </main>
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

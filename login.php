@@ -12,17 +12,17 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err = "";
+$index_number = $password = "";
+$index_number_err = $password_err = "";
  
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
  
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter Index Number.";
-    } else{
-        $username = trim($_POST["username"]);
+    // Check if index_number is empty
+    if(empty(trim($_POST["index_number"]))){
+        $index_number_err = "Please enter Index Number.";
+    } else
+        $index_number = trim($_POST["index_number"]);
     }
     
     // Check if password is empty
@@ -33,59 +33,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Validate credentials
-    if(empty($username_err) && empty($password_err)){
-        // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
-                            
-                            // Redirect user to welcome page
-                            header("location: welcome.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_err = "The password you entered was not valid.";
-                        }
-                    }
-                } else{
-                    // Display an error message if username doesn't exist
-                    $username_err = "No account found with that username.";
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+    if(empty($index_number_err) && empty($password_err)){
 
-            // Close statement
-            mysqli_stmt_close($stmt);
+        $sql = "SELECT id, username, index_number, password FROM users WHERE index_number = :index_number";
+
+        if (DB::query($sql, array(':index_number' => $index_number))) {
+        
+        // Prepare a select statement
+        $userInfo = DB::query($sql, array(':index_number' => $index_number));
+
+        $hashed_password = $userInfo[0]['password'];
+        $username = $userInfo[0]['username'];
+
+        if(password_verify($password, $hashed_password)){
+            
+            session_start();
+
+            // Store data in session variables
+            $_SESSION["loggedin"] = true;
+            $_SESSION["id"] = $id;
+            $_SESSION["index_number"] = $index_number;
+            $_SESSION["username"] = $username;                            
+            
+            // Redirect user to welcome page
+            header("location: welcome.php");
+        } else{
+
+            // Display an error message if password doesn't exist
+            $index_number_err = "No account found with that Password.";
         }
+
+    } else{
+            // Display an error message if username doesn't exist
+            $index_number_err = "No account found with that Index Number.";
     }
-    
-    // Close connection
-    mysqli_close($link);
-}
+
+        
+        
+        
+    }
+
 ?>
  
 <!DOCTYPE html>
@@ -123,10 +110,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <p>Please fill in your credentials to login.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                        <label>Username</label>
-                        <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                        <span class="help-block"><?php echo $username_err; ?></span>
+                    <div class="form-group <?php echo (!empty($index_number_err)) ? 'has-error' : ''; ?>">
+                        <label>index_number</label>
+                        <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
+                        <span class="help-block"><?php echo $index_number_err; ?></span>
                     </div>    
                     <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                         <label>Password</label>
@@ -154,10 +141,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <p>Please fill in your credentials to login.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <div class="form-group <?php echo (!empty($index_number_err)) ? 'has-error' : ''; ?>">
                         <label>Index Number</label>
-                        <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                        <span class="help-block danger"><?php echo $username_err; ?></span>
+                        <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
+                        <span class="help-block danger"><?php echo $index_number_err; ?></span>
                     </div>    
                     <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                         <label>Password</label>

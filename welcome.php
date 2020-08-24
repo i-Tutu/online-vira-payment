@@ -2,16 +2,14 @@
 <?php
 // Initialize the session
 session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//     header("location: course.php");
-//     exit;
-// }
+
+print_r($_SESSION);
+// $_SESSION["username"]; 
+$username = $_SESSION["username"];
  
 // Include config file
 require_once "config.php";
- 
+
 // Define variables and initialize with empty values
 $payment_code = "";
 $payment_code_err = "";
@@ -19,7 +17,7 @@ $payment_code_err = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
-    // Check if payment_code is empty
+     // Check if payment_code is empty
     if(empty(trim($_POST["payment_code"]))){
         $payment_code_err = "Please enter Code.";
     } else{
@@ -28,54 +26,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate credentials
     if(empty($payment_code_err)){
-        // Prepare a select statement
-        $sql = "SELECT id, payment_code FROM payment WHERE payment_code = ?";
+
+      // Prepare a select statement
+      $sql = "SELECT id, payment_code FROM payment WHERE  payment_code = : payment_code";
+
+        if (DB::query($sql, array(':payment_code' => $payment_code))) {
         
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_payment_code);
+        // Prepare a select statement
+        $userInfo = DB::query($sql, array(':payment_code' => $payment_code));
+
+        if(password_verify($password, $hashed_password)){
             
-            // Set parameters
-            $param_payment_code = $payment_code;
+            session_start();
+
+            // Store data in session variables
+            $_SESSION["loggedin"] = true;
+            $_SESSION["id"] = $id;
+            $_SESSION["payment_code"] = $payment_code;                           
             
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if payment_code exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $payment_code);
-                    if(mysqli_stmt_fetch($stmt)){
-
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["payment_code"] = $payment_code;                            
-                            
-                            // Redirect user to welcome page
-                            header("location: course.php"); 
-                      }
-                    }
-                }
-
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
+            // Redirect user to welcome page
+            header("location: courses.php");
         }
+
+       }
+
+      } else{
+              // Display an error message if payment code doesn't exist
+              $payment_code_err = "No account found with that payment_code.";
+      }
+     
     }
-    
-    // Close connection
-    mysqli_close($link);
 
 ?>
-
  
 <!DOCTYPE html>
 <html lang="en">
@@ -120,7 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <section>
         <div class="container">
         <div class="text-center mt-3">
-            <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3>
+          <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3> 
         </div>
 
             <!-- <div class="row">
@@ -170,7 +152,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <div class="col-md-4">
               <p>
                 <a class="btn btn-primary justify-content-between" data-toggle="collapse" href="#collapsemtn" role="button" aria-expanded="false" aria-controls="collapseExample">
-                  Click here to check the procedures on how to make payment with MTN
+                  Click here to check the procedures on how to make payment with MTN MOMO
                 </a>
               </p>
               <div class="collapse" id="collapsemtn">
