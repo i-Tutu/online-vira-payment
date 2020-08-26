@@ -1,80 +1,85 @@
 <?php
 // Initialize the session
 session_start();
- 
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: welcome.php");
     exit;
 }
- 
+
 // Include config file
 require_once "config.php";
- 
+
 // Define variables and initialize with empty values
 $index_number = $password = "";
 $index_number_err = $password_err = "";
- 
+
 // Processing form data when form is submitted
-if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if index_number is empty
-    if(empty(trim($_POST["index_number"]))){
-        $index_number_err = "Please enter Index Number.";
-    } else
-        $index_number = trim($_POST["index_number"]);
-    }
-    
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter your password.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
-    
-    // Validate credentials
-    if(empty($index_number_err) && empty($password_err)){
+if(isset($_POST['loginBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+  echo '<script>alert("hell yeah");</script>';
 
-        $sql = "SELECT id, username, index_number, password FROM users WHERE index_number = :index_number";
+  // Check if index_number is empty
+  if (empty(trim($_POST['index_number']))) {
+    // code...
+    $index_number_err = "Please enter Index Number.";
+  } else {
+    // code...
+    $index_number = trim($_POST['index_number']);
+  }
 
-        if (DB::query($sql, array(':index_number' => $index_number))) {
-        
-        // Prepare a select statement
-        $userInfo = DB::query($sql, array(':index_number' => $index_number));
+   // Check if password is empty
+   if (empty(trim($_POST['password']))) {
+     // code...
+     $password_err = "Please enter your password.";
+   } else {
+     // code...
+     $password = trim($_POST['password']);
+   }
 
-        $hashed_password = $userInfo[0]['password'];
-        $username = $userInfo[0]['username'];
+   if(empty($index_number_err) && empty($password_err)){
+     // code...
+     $sql = "SELECT id, username, index_number, password FROM users WHERE index_number = :index_number";
 
-        if(password_verify($password, $hashed_password)){
-            
-            session_start();
+     if (DB::query($sql, array(':index_number' => $index_number))) {
+       // code...
+       // Prepare a select statement
+       $userInfo = DB::query($sql, array(':index_number' => $index_number));
 
-            // Store data in session variables
-            $_SESSION["loggedin"] = true;
-            $_SESSION["id"] = $id;
-            $_SESSION["index_number"] = $index_number;
-            $_SESSION["username"] = $username;                            
-            
-            // Redirect user to welcome page
-            header("location: welcome.php");
-        } else{
+       $hashed_password = $userInfo[0]['password'];
+       $username = $userInfo[0]['username'];
 
-            // Display an error message if password doesn't exist
-            $index_number_err = "No account found with that Password.";
-        }
+       if (password_verify($password, $hashed_password)) {
+         // code...
+         session_start();
+         // Store data in session variables
+         $_SESSION["loggedin"] = true;
+         $_SESSION["id"] = $id;
+         $_SESSION["index_number"] = $index_number;
+         $_SESSION["username"] = $username;
 
-    } else{
-            // Display an error message if username doesn't exist
-            $index_number_err = "No account found with that Index Number.";
-    }
+         // Redirect user to welcome page
+         header("location: welcome.php");
+       } else {
+         // code...
+         // Display an error message if password doesn't exist
+         $index_number_err = "No account found with that Password.";
+       }
+      } else {
+        // code...
+        // Display an error message if username doesn't exist
+        $index_number_err = "No account found with that Index Number.";
+      }
 
-        
-        
-        
-    }
+   }
 
+// } else {
+//   // code...
+//   echo '<script>alert("hell Noo!!");</script>';
+//   print_r($_REQUEST);
+}
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,23 +103,23 @@ if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
 
-    <?php 
+    <?php
         include("resource/header.php");
-    ?> 
+    ?>
 
     <!-- <div class="card">
         <div class="card-header"><h2>Login</h2></div>
             <div class="card-body">
 
                 <div class="wrapper">
-                
+
                 <p>Please fill in your credentials to login.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="form-group <?php echo (!empty($index_number_err)) ? 'has-error' : ''; ?>">
                         <label>index_number</label>
                         <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
                         <span class="help-block"><?php echo $index_number_err; ?></span>
-                    </div>    
+                    </div>
                     <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                         <label>Password</label>
                         <input type="password" name="password" class="form-control">
@@ -127,10 +132,10 @@ if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     <p><a href="register.php">Sign Up</a>.</p>
                 </form>
                 </div>
-                
+
             </div>
-        
-    </div> -->  
+
+    </div> -->
 
 <div class="container mt-5 pt-5 mb-5">
 
@@ -145,7 +150,7 @@ if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                         <label>Index Number</label>
                         <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
                         <span class="help-block danger"><?php echo $index_number_err; ?></span>
-                    </div>    
+                    </div>
                     <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                         <label>Password</label>
                         <input type="password" name="password" class="form-control">
@@ -153,14 +158,14 @@ if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                           <input type="password" class="form-control pwd" value="">
                           <span class="input-group-btn">
                             <button class="btn btn-dark reveal" type="button"><i class="fa fa-eye"></i></button>
-                          </span>          
+                          </span>
                         </div> -->
                         <span class="help-block danger"><?php echo $password_err; ?></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-baseline">
-                        <input type="submit" class="btn btn-primary" value="Login">
+                        <input type="submit" class="btn btn-primary" value="Login" name="loginBtn">
                         <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                    
+
                     <!-- <p><a href="reset-password.php">Reset Password</a>.</p> -->
                    <!--  <p><a href="register.php">Sign Up</a></p> -->
                     </div>
@@ -170,7 +175,7 @@ if(isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
     <div class="text-center mt-5"><a href="admin/index.php">Admin</a></div>
 
-</div> 
+</div>
 <!--container end.//-->
 
 <!-- Bootstrap core JavaScript -->
