@@ -8,6 +8,11 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     exit;
 }
 
+// if($_SESSION["status"] == 'student'){
+//     header("location: welcome.php");
+//     exit;
+// }
+
 // Include config file
 require_once "config.php";
 
@@ -17,7 +22,7 @@ $index_number_err = $password_err = "";
 
 // Processing form data when form is submitted
 if(isset($_POST['loginBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
-  echo '<script>alert("hell yeah");</script>';
+  // echo '<script>alert("hell yeah");</script>';
 
   // Check if index_number is empty
   if (empty(trim($_POST['index_number']))) {
@@ -48,35 +53,32 @@ if(isset($_POST['loginBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
        $hashed_password = $userInfo[0]['password'];
        $username = $userInfo[0]['username'];
+       $userID = $userInfo[0]['id'];
 
        if (password_verify($password, $hashed_password)) {
          // code...
          session_start();
          // Store data in session variables
          $_SESSION["loggedin"] = true;
-         $_SESSION["id"] = $id;
+         $_SESSION["id"] = $userID;
          $_SESSION["index_number"] = $index_number;
          $_SESSION["username"] = $username;
+         $_SESSION["status"] = 'student';
 
          // Redirect user to welcome page
          header("location: welcome.php");
        } else {
          // code...
-         // Display an error message if password doesn't exist
-         $index_number_err = "No account found with that Password.";
+         // Display an error message if index numberdoesn't exist
+         $index_number_err = "No account found with that Index Number.";
        }
       } else {
         // code...
-        // Display an error message if username doesn't exist
-        $index_number_err = "No account found with that Index Number.";
+        // Display an error message if password doesn't exist
+        $index_number_err = "No account found with that password.";
       }
 
    }
-
-// } else {
-//   // code...
-//   echo '<script>alert("hell Noo!!");</script>';
-//   print_r($_REQUEST);
 }
 ?>
 
@@ -107,35 +109,6 @@ if(isset($_POST['loginBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
         include("resource/header.php");
     ?>
 
-    <!-- <div class="card">
-        <div class="card-header"><h2>Login</h2></div>
-            <div class="card-body">
-
-                <div class="wrapper">
-
-                <p>Please fill in your credentials to login.</p>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group <?php echo (!empty($index_number_err)) ? 'has-error' : ''; ?>">
-                        <label>index_number</label>
-                        <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
-                        <span class="help-block"><?php echo $index_number_err; ?></span>
-                    </div>
-                    <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control">
-                        <span class="help-block"><?php echo $password_err; ?></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Login">
-                    </div>
-                    <p><a href="reset-password.php">Reset Password</a>.</p>
-                    <p><a href="register.php">Sign Up</a>.</p>
-                </form>
-                </div>
-
-            </div>
-
-    </div> -->
 
 <div class="container mt-5 pt-5 mb-5">
 
@@ -149,18 +122,12 @@ if(isset($_POST['loginBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="form-group <?php echo (!empty($index_number_err)) ? 'has-error' : ''; ?>">
                         <label>Index Number</label>
                         <input type="text" name="index_number" class="form-control" value="<?php echo $index_number; ?>">
-                        <span class="help-block danger"><?php echo $index_number_err; ?></span>
+                        <span class="help-block text-danger"><?php echo $index_number_err; ?></span>
                     </div>
                     <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                         <label>Password</label>
                         <input type="password" name="password" class="form-control">
-                        <!-- <div class="input-group">
-                          <input type="password" class="form-control pwd" value="">
-                          <span class="input-group-btn">
-                            <button class="btn btn-dark reveal" type="button"><i class="fa fa-eye"></i></button>
-                          </span>
-                        </div> -->
-                        <span class="help-block danger"><?php echo $password_err; ?></span>
+                        <span class="help-block text-danger"><?php echo $password_err; ?></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-baseline">
                         <input type="submit" class="btn btn-primary" value="Login" name="loginBtn">

@@ -1,4 +1,21 @@
-<!doctype html>
+<?php 
+
+// Initialize the session
+session_start();
+
+
+if(!isset($_SESSION["loggedin"]) OR $_SESSION["loggedin"] === false){
+
+    header("location: index.php");
+    exit;
+} elseif($_SESSION["status"] != 'admin'){
+    header("location: ../login.php");
+    exit;
+}
+
+?>
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -6,7 +23,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Admin Dashboard Template</title>
+    <title>Admin Dashboard</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
 

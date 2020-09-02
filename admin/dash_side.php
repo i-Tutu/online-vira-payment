@@ -25,8 +25,14 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="stud_registered.php">
-              <span data-feather="file"></span>
+              <span data-feather="student"></span>
               Students
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="add_course.php">
+              <span data-feather="course"></span>
+              Add Course
             </a>
           </li>
         </ul>

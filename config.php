@@ -1,6 +1,6 @@
 <?php
 
-// error_reporting(E_ALL);
+error_reporting(E_ALL);
 
 // /* Database credentials. Assuming you are running MySQL
 // server with default setting (user 'root' with no password) */
@@ -29,19 +29,7 @@
 
 <?php
   class DB {
-          // public static $host;
-          // public static $dbName;
-          // public static $username;
-          // public static $password;
-          //ourcomunmmy_linkpal
 
-          // for beta release
-          // public static $host = "localhost";
-          // public static $dbName = "ourcomunmmy_linkpal_db";
-          // public static $username = "ourcomunmmy_linkupp";
-          // public static $password = "Pa55word41#";
-
-          // for development
           public static $host = "localhost";
           public static $dbName = "studentspay";
           public static $username = "root";
@@ -53,12 +41,6 @@
             return $pdo;
     }
 
-    // public static function queryRaw($query, $params = array()) {
-    //         $statement = self::connect()->prepare($query);
-    //         $statement->execute($params);
-    //         return $statement;
-    // }
-
     public static function query($query, $params = array()) {
               $statement = self::connect()->prepare($query);
               $statement->execute($params);
@@ -66,6 +48,8 @@
               if (explode(' ', $query)[0] == 'SELECT') {
               $data = $statement->fetchAll();
               return $data;
+              } else{
+                return True;
               }
       }
 

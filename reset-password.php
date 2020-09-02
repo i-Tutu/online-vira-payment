@@ -10,6 +10,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
  
 // Include config file
 require_once "config.php";
+
+// Alert
+$alerter = "";
+
+// User id
+$user_id = $_SESSION['id'];
  
 // Define variables and initialize with empty values
 $new_password = $confirm_password = "";
@@ -36,37 +42,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $confirm_password_err = "Password did not match.";
         }
     }
+
+    // Hashed password
+    $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
         
     // Check input errors before updating the database
     if(empty($new_password_err) && empty($confirm_password_err)){
         // Prepare an update statement
-        $sql = "UPDATE users SET password = ? WHERE id = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
-            
-            // Set parameters
-            $param_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $param_id = $_SESSION["id"];
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Password updated successfully. Destroy the session, and redirect to login page
-                session_destroy();
-                header("location: login.php");
-                exit();
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+        $sql = "UPDATE users SET password = :password WHERE id = :userId";
 
-            // Close statement
-            mysqli_stmt_close($stmt);
+        $query = DB::query($sql, array(':password' => $password_hash, ':userId' => $user_id));
+
+        if ($query) {
+
+            $alerter = "success";
+             
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";  
         }
+        
     }
-    
-    // Close connection
-    mysqli_close($link);
 }
 ?>
  
@@ -79,6 +74,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <link rel="stylesheet" ref="bootstrap/site.css">
 </head>
 <body>
+
+     <!-- Alert -->
+       <?php 
+         if ($alerter == "success") {
+              
+            ?>
+        <div class="alert alert-success alert-dismissible mt-1 mr-5 ml-5">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Succesfully!</strong> updated <a href="welcome.php">Back to Home</a>
+        </div>
+          <?php
+            }
+        ?>
+
     <div class="card mx-auto" style="max-width: 600px; margin-top: 50px; background-color: #fafafa;">
     <article class="card-body mx-auto" style="max-width: 600px;">
     <h2 class="card-title mt-3 text-center">Reset Password</h2>
@@ -101,5 +110,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </form>
     </article>
     </div>    
+
+
+    <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/reveal.js"></script>
+  
 </body>
 </html>

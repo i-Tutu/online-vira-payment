@@ -1,26 +1,9 @@
-
 <?php
-  // Initialize the session
-  session_start();
 
-   $alerter = "";
-
-  // Include config file
-  require_once "config.php";
-
-
-  //Insert into course table 
-$checkbox1 = $_POST['optradio'] ;  
-if ($_POST["Submit" ]=="Submit")  
-{  
-for ($i=0; $i<sizeof ($checkbox1);$i++) {  
-$query="INSERT INTO courses VALUES ('".$checkbox1[$i]. "')";  
-mysql_query($query) or die(mysql_error());  
-}  
-echo "Record is inserted";  
-}  
+$alerter = "";
 
 ?>
+
 
 <!DOCTYPE html>
 
@@ -63,29 +46,6 @@ echo "Record is inserted";
     <link href="navbar-top-fixed.css" rel="stylesheet">
   </head>
   <body>
-    <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="#">Fixed navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>
-    <form class="form-inline mt-2 mt-md-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
-</nav> -->
 
     <nav class="navbar static bg-primary">
           <div class="container-fluid">
@@ -110,18 +70,25 @@ echo "Record is inserted";
               
             ?>
         <div class="alert alert-success mt-1 mr-5 ml-5">
-          <a href="display.php" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Succesfully!</strong> Saved 
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Succesfully!</strong> Confirmed
         </div>
           <?php
             }
           ?>
 
+
 <main role="main" class="container mt-5">
   <div class="jumbotron justify-content-between align-items-end">
-    <!-- <h1>Courses Available</h1>
-    <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll, it will remain fixed to the top of your browser’s viewport.</p>
-    <a class="btn btn-lg btn-primary" href="../components/navbar/" role="button">View navbar docs &raquo;</a> -->
+
+    <div class="col-sm-6 mb-3">
+        <select class="form-control" name="type" required>
+          <option value="S" selected>Select Department</option>
+          <option value="N">Computer Network Management</option>
+          <option value="C">Computer Science</option>
+        </select>
+      </div>
+
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <ul class="list-group">
             <h4><li class="list-group-item active text-center">Courses Available</li></h4>
@@ -156,10 +123,8 @@ echo "Record is inserted";
     </form>
   </div>
 </main>
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script> -->
-      <script>
-        document.getElementById("add1").innerHTML = "Added";
-      </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
+      
   </body>
 </html>

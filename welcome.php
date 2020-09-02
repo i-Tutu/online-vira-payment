@@ -1,63 +1,62 @@
-
 <?php
 // Initialize the session
 session_start();
 
-print_r($_SESSION);
-// $_SESSION["username"]; 
-$username = $_SESSION["username"];
- 
+// Check if the user is already logged in, if yes then redirect him to courses page
+if(!isset($_SESSION["loggedin"]) OR $_SESSION["loggedin"] === false){
+    header("location: login.php");
+    exit;
+
+} elseif($_SESSION["status"] != 'student'){
+    header("location: admin/index.php");
+    exit;
+}
+
 // Include config file
 require_once "config.php";
 
 // Define variables and initialize with empty values
 $payment_code = "";
 $payment_code_err = "";
- 
+
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-     // Check if payment_code is empty
+if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+
+   // Check if payment_code is empty
     if(empty(trim($_POST["payment_code"]))){
         $payment_code_err = "Please enter Code.";
     } else{
         $payment_code = trim($_POST["payment_code"]);
     }
-    
-    // Validate credentials
-    if(empty($payment_code_err)){
 
-      // Prepare a select statement
-      $sql = "SELECT id, payment_code FROM payment WHERE  payment_code = : payment_code";
 
-        if (DB::query($sql, array(':payment_code' => $payment_code))) {
-        
-        // Prepare a select statement
-        $userInfo = DB::query($sql, array(':payment_code' => $payment_code));
+   if(empty($payment_code_err)){
+     // code...
+     $sql = "SELECT id, payment_code FROM payment WHERE  payment_code = :payment_code";
 
-        if(password_verify($password, $hashed_password)){
-            
-            session_start();
+     if (DB::query($sql, array(':payment_code' => $payment_code))) {
 
-            // Store data in session variables
-            $_SESSION["loggedin"] = true;
-            $_SESSION["id"] = $id;
-            $_SESSION["payment_code"] = $payment_code;                           
-            
-            // Redirect user to welcome page
-            header("location: courses.php");
-        }
+       // Prepare a select statement
+       $payInfo = DB::query($sql, array(':payment_code' => $payment_code));
 
+       // $hashed_password = $userInfo[0]['password'];
+       $payment_code = $payInfo[0]['payment_code'];
+
+       if ($payment_code) {
+
+         // Redirect user to welcome page
+         header("location: course.php");
+       } else {
+         // Display an error message if pin doesn't exist
+         $payment_code_err = "No account found with that Pin.";
        }
+      } 
 
-      } else{
-              // Display an error message if payment code doesn't exist
-              $payment_code_err = "No account found with that payment_code.";
-      }
-     
-    }
+   }
 
+}
 ?>
+
  
 <!DOCTYPE html>
 <html lang="en">
@@ -266,10 +265,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="form-group <?php echo (!empty($payment_code_err)) ? 'has-error' : ''; ?>">
                                 <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>">
-                                <span class="help-block danger"><?php echo $payment_code_err; ?></span>
+                                <span class="help-block text-danger"><?php echo $payment_code_err; ?></span>
                             </div>  
                             <div class="input">
-                                <input type="submit" class="btn btn-primary" value="Send">
+                                <input type="submit" class="btn btn-primary" value="Send" name="pinBtn">
                             </div>
                         </form>
                 </div>
@@ -287,9 +286,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       include("resource/footer.php");
     ?>
 
-    <!-- Bootstrap core JavaScript -->
+   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/reveal.js"></script>
     
 </body>
 </html>

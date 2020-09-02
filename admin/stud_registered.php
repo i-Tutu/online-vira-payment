@@ -1,4 +1,6 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -6,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Admin Dashboard Template</title>
+    <title>Students Registered</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
 
@@ -60,6 +62,7 @@
           <thead>
             <tr>
               <th>Number</th>
+              <th>Name</th>
               <th>Index Number</th>
               <th>Programme</th>
               <th>Level</th>
@@ -68,30 +71,35 @@
           <tbody>
             <tr>
               <td>1</td>
+              <td>Full name</td>
               <td>04/2017/1705D</td>
               <td>Computer Science</td>
               <td>200</td>
             </tr>
             <tr>
               <td>2</td>
+              <td>Full name</td>
               <td>04/2018/1778D</td>
               <td>Computer Networking Management</td>
               <td>100</td>
             </tr>
             <tr>
               <td>3</td>
+              <td>Full name</td>
               <td>04/2017/1743D</td>
               <td>Computer Networking Management</td>
               <td>100</td>
             </tr>
             <tr>
               <td>4</td>
+              <td>Full name</td>
               <td>04/2018/1795D</td>
               <td>Computer Networking Management</td>
               <td>200</td>
             </tr>
             <tr>
               <td>5</td>
+              <td>Full name</td>
               <td>04/2018/1722D</td>
               <td>Computer Science</td>
               <td>100</td>
