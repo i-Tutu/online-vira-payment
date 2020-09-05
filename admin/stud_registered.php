@@ -1,4 +1,25 @@
+<?php 
 
+// Initialize the session
+session_start();
+
+if(!isset($_SESSION["loggedin"]) OR $_SESSION["loggedin"] === false){
+
+    header("location: index.php");
+    exit;
+} elseif($_SESSION["status"] != 'admin'){
+    header("location: ../login.php");
+    exit;
+}
+
+// Include config file
+require_once "../config.php";
+
+$students_sql = "SELECT `id`, `username`, `index_number`, `department`, `level` FROM `users` WHERE 1";
+
+$students = DB::query($students_sql);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,41 +90,38 @@
             </tr>
           </thead>
           <tbody>
+
+            <?php 
+              $student_count = 0;
+
+              foreach ($students as $student) {
+                $student_count++; 
+            ?>
+
             <tr>
-              <td>1</td>
-              <td>Full name</td>
-              <td>04/2017/1705D</td>
-              <td>Computer Science</td>
-              <td>200</td>
+              <td><?= $student_count?></td>
+              <td><?= $student['username']?></td>
+              <td><?= $student['index_number']?></td>
+              <td><?= $student['department']?></td>
+              <td><?= $student['level']?></td> 
             </tr>
-            <tr>
+
+            <?php
+
+               }
+
+            ?>
+            
+
+
+
+            <!-- <tr>
               <td>2</td>
               <td>Full name</td>
               <td>04/2018/1778D</td>
               <td>Computer Networking Management</td>
               <td>100</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Full name</td>
-              <td>04/2017/1743D</td>
-              <td>Computer Networking Management</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Full name</td>
-              <td>04/2018/1795D</td>
-              <td>Computer Networking Management</td>
-              <td>200</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Full name</td>
-              <td>04/2018/1722D</td>
-              <td>Computer Science</td>
-              <td>100</td>
-            </tr>
+            </tr> -->
 
           </tbody>
         </table>
@@ -115,5 +133,12 @@
       <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-        <script src="dashboard.js"></script></body>
+        <script src="dashboard.js"></script>
+
+ <!-- Bootstrap core JavaScript -->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../bootstrap/js/bootstrap.min.js"></script>
+  <script src="../bootstrap/reveal.js"></script>
+
+      </body>
 </html>

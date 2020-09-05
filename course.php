@@ -1,6 +1,21 @@
 <?php
 
+// Initialize the session
+session_start();
+
+// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+//     header("location: welcome.php");
+//     exit;
+// }
+
 $alerter = "";
+
+// Include config file
+require_once "config.php";
+
+$course_sql = "SELECT `id`, `course` FROM `courses` WHERE 1 ";
+
+$courses = DB::query($course_sql);
 
 ?>
 
@@ -71,7 +86,7 @@ $alerter = "";
             ?>
         <div class="alert alert-success mt-1 mr-5 ml-5">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Succesfully!</strong> Confirmed
+          <strong>Succesfully!</strong> Registered
         </div>
           <?php
             }
@@ -93,38 +108,32 @@ $alerter = "";
           <ul class="list-group">
             <h4><li class="list-group-item active text-center">Courses Available</li></h4>
             <small><li class="list-group-item active text-center">Please register all courses</li></small>  
-            <li class="list-group-item d-flex justify-content-between align-items-center">Graphic Design
+
+            <?php 
+            foreach ($courses as $course) {
+            ?>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center"><?= $course['course']?>
               <!-- <a href="#" id="add1" class="badge badge-primary">Add</a> -->
              <label><input type="checkbox" name="optradio" value="Graphic Design"></label>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">Ethical Hacking
-              <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio" value="Ethical Hacking"></label>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">Web Development
-              <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio" value="Web Development"></label>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">Switching and Routing
-              <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio" value="Switching and Routing"></label>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">Hardware
-              <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio" value="Hardware"></label>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">Satellite Installation
-              <!-- <a href="#" class="badge badge-primary">Add</a> -->
-              <label><input type="checkbox" name="optradio" value="Satellite Installation"></label>
-            </li>
-          </ul>
 
-        <button class="btn btn-primary text-center mt-5">Confirm</button>
+            <?php 
+              }
+            ?>
+
+          </ul>
+        <input type="submit" class="btn btn-primary text-center mt-5" name="submit" value="Confirm">
     </form>
   </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script> -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/reveal.js"></script>
       
   </body>
 </html>

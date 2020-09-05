@@ -181,9 +181,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </div> 
 <!--container end.//-->  
 
-<!-- Bootstrap core JavaScript -->
+  <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/reveal.js"></script>
   
 </body>
 </html>

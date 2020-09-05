@@ -38,9 +38,6 @@ $course_sql = "SELECT `id`, `course` FROM `courses` WHERE `status` = 'active'";
 
 $courses = DB::query($course_sql);
 
-// print_r($courses);
-// exit();
-
 ?>
 
 <!DOCTYPE html>
@@ -85,9 +82,6 @@ $courses = DB::query($course_sql);
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Available Courses</h1>
-
-        <!-- Trigger the modal with a button -->
-        <!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Add Course</button> -->
       </div>
 
         <!-- Alert -->
@@ -155,35 +149,15 @@ $courses = DB::query($course_sql);
     </main>
 
 
-<!-- Modal function -->
-
-<!-- Modal -->
-<!-- <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog"> -->
-
-    <!-- Modal content-->
-   <!--  <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add Course</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div> -->
-<!-- End of Modal -->
-
-
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   <!-- <script src="dashboard.js"></script> -->
+
+    <!-- Bootstrap core JavaScript -->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../bootstrap/js/bootstrap.min.js"></script>
+  <script src="../bootstrap/reveal.js"></script>
    </body>
 </html>
