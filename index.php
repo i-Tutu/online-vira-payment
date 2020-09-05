@@ -47,7 +47,7 @@
         <div class="col-lg-8 order-lg-1">
           <div class="p-5">
             <h2 class="display-4">Koforidua Technical University | VIRA</h2>
-            <p>The purpose of VIRA in Koforidua Technical University is to enhance students skills for the job market</p>
+            <p>VIRA– (Virtual Industrial Attachment Programme)- students are given practical training on campus. This offer provides students with relevant practical experience as seasoned industrial experts are engaged to take the students through the training.</p>
           </div>
         </div>
       </div>
@@ -66,8 +66,15 @@
         </div>
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
-            <h2 class="display-4">Aquire Skills</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+            <h2 class="display-4">Benefits of VIRA</h2>
+            <p>
+              <div>VIRA- (Virtual Industrial Attachment Programme)</div> 
+              <div>
+                <li>Provide quality hands-on experience to students</li> 
+                <li>Bridges the gap between academia and industry</li> 
+                <li>Public-private partnership training is provided from both public and private resource persons</li> 
+            </div>
+            </p>
           </div>
         </div>
       </div>
@@ -84,8 +91,12 @@
         </div>
         <div class="col-lg-6">
           <div class="p-5">
-            <h2 class="display-4">Making you ready for the job market</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+            <h2 class="display-4">Importance of VIRA</h2>
+            <p>
+              Do you want to attain a real practical experience in Marketing or a Accountancy? Want to have more practical knowledge in software design as Computer Science student ? Do you have hands on skill in preparing a procurement plan?
+
+              The best practical training that will earn you a life time job is VIRA.
+            </p>
           </div>
         </div>
       </div>
@@ -102,8 +113,24 @@
         </div>
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
-            <h2 class="display-4">Building your confidence</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+            <h2 class="display-4">Address</h2>
+            <p> <b>Postal Address</b> <br>
+                Koforidua Technical University
+                Industrial Liaison Office
+                Post Office Box KF-981
+                Koforidua
+                Eastern Region
+                Ghana
+                <br>
+                <b>General Enquirers</b>
+                +233 3039 61714
+                <br>
+                <b>Email Enquirers</b> 
+                ilo@ktu.edu.gh
+                <br>
+                <b>WhatsApp Support</b> 
+                +233 3039 61714
+            </p>
           </div>
         </div>
       </div>
