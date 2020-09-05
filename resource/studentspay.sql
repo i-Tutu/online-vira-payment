@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2020 at 05:28 PM
+-- Generation Time: Sep 05, 2020 at 03:47 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int(11) DEFAULT NULL,
-  `password` varchar(22) NOT NULL
+  `id` int(11) NOT NULL,
+  `password` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `password`) VALUES
-(1, 'admin');
+(1, '$2y$10$FofvgoasnEWlGo5yhO6cVuzB84V1/8R3r/eUGp78LMavegT/Scora');
 
 -- --------------------------------------------------------
 
@@ -47,14 +47,21 @@ INSERT INTO `admin` (`id`, `password`) VALUES
 
 CREATE TABLE `courses` (
   `id` int(11) NOT NULL,
-  `id_payment` int(11) NOT NULL,
-  `course_a` int(11) NOT NULL,
-  `course_b` int(11) NOT NULL,
-  `course_c` int(11) NOT NULL,
-  `course_d` int(11) NOT NULL,
-  `course_e` int(11) NOT NULL,
-  `course_f` int(11) NOT NULL
+  `course` varchar(100) NOT NULL,
+  `status` varchar(15) NOT NULL DEFAULT 'active',
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`id`, `course`, `status`, `date_added`) VALUES
+(1, 'Graphic Design', 'active', '2020-09-05 11:07:01'),
+(2, 'Ethical Hacking', 'active', '2020-09-05 11:07:17'),
+(3, 'Web Design', 'active', '2020-09-05 11:07:39'),
+(4, 'Networking', 'active', '2020-09-05 11:07:50'),
+(5, 'Photography', 'active', '2020-09-05 13:35:19');
 
 -- --------------------------------------------------------
 
@@ -85,7 +92,9 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `index_number` varchar(20) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `department` varchar(50) NOT NULL,
+  `level` int(10) NOT NULL,
+  `password` varchar(255) NOT NULL DEFAULT '$2y$10$q8GVLHbpN/i185e6.vptHeAOeAvX0OaWMcO1/gjTcd5MVCKRaWODe',
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -93,16 +102,22 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `index_number`, `password`, `created_at`) VALUES
-(1, 'KWABENA', '04/2017/0002', '$2y$10$Ee4XfKc30cARA2VJY8yQRe07IRKRatVdVlK6rHrt8gCpcU.5gZ1Au', '2020-07-01 17:40:02'),
-(2, 'KWABENA STO', '04/2017/0001', '$2y$10$7/W0orbYQEgWK1aGoNI33uphp1j5TxPCMncsjSYg6Cm0MUGqve6SC', '2020-07-03 20:54:49'),
-(5, '04/2018/4535d', '', '$2y$10$WS1CJYsMwsSsLFV3ghnHP.G4BZi0VkbF8A4zPAbe.R7/b0DO7eUmu', '2020-07-28 09:21:47'),
-(6, '04/2017/1752d', '', '$2y$10$PwlLnNBZRsjAvj83fuRbSOtRd159mDpxMiEk0OyesyoWYDPKcfeom', '2020-07-28 09:27:24'),
-(7, '04/2017/1748d', '', '$2y$10$iyLmCYU4lxk6K.fFSDE2xuamhLtyKy4JowN.xekzX7DwZWspGWLl2', '2020-07-28 09:46:48');
+INSERT INTO `users` (`id`, `username`, `index_number`, `department`, `level`, `password`, `created_at`) VALUES
+(1, 'Kwabena Abobire', '04/2017/1752d', 'Computer Network Management', 200, '$2y$10$q8GVLHbpN/i185e6.vptHeAOeAvX0OaWMcO1/gjTcd5MVCKRaWODe', '2020-07-01 17:40:02'),
+(2, 'Gilbert Anfom Evans', '04/2017/1753d', 'Computer Network Management', 200, '$2y$10$q8GVLHbpN/i185e6.vptHeAOeAvX0OaWMcO1/gjTcd5MVCKRaWODe', '2020-07-03 20:54:49'),
+(5, 'Issah Gamed', '04/2017/1754d', 'Computer Science', 100, '$2y$10$q8GVLHbpN/i185e6.vptHeAOeAvX0OaWMcO1/gjTcd5MVCKRaWODe', '2020-07-28 09:21:47'),
+(6, 'Amo Yaw', '04/2017/1755d', 'Computer Network Management', 100, '$2y$10$q8GVLHbpN/i185e6.vptHeAOeAvX0OaWMcO1/gjTcd5MVCKRaWODe', '2020-07-28 09:27:24'),
+(7, 'Yeboa Kwame', '04/2017/1756d', 'Computer Science', 200, '$2y$10$9mB1cyvY5Chtfc5XlGvbie9.K.N5tUbllmi7tXiWkXsTsx3S3koAi', '2020-07-28 09:46:48');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `courses`
@@ -131,7 +146,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payment`
