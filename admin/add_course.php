@@ -107,7 +107,7 @@ $courses = DB::query($course_sql);
       <form action="" method="POST">
         <div class="form-group row">
           <div class="col-sm-6">
-            <input type="text" name="course" class="form-control" placeholder="Add Course">
+            <input type="text" name="course" class="form-control" placeholder="Add Course" required>
           </div>
           <div class="col-sm-4">
             <input type="submit" class="col-sm-6 btn btn-primary" name="submit" value="Add">
