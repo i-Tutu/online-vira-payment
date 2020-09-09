@@ -13,7 +13,7 @@ $alerter = "";
 // Include config file
 require_once "config.php";
 
-$course_sql = "SELECT `id`, `course` FROM `courses` WHERE 1 ";
+$course_sql = "SELECT `id`, `course` FROM `courses` WHERE `status` = 'active'";
 
 $courses = DB::query($course_sql);
 

@@ -16,6 +16,7 @@ require_once "../config.php";
 
 $alerter = '';
 
+// Inserting courses into in db
 if (isset($_POST['course'])){
 
   $course = $_POST['course'];
@@ -34,9 +35,29 @@ if (isset($_POST['course'])){
 
 }
 
-$course_sql = "SELECT `id`, `course` FROM `courses` WHERE `status` = 'active'";
+if (isset($_POST['delete'])){
 
+  $course_id = $_POST['course_id'];
+
+  $course_del = "UPDATE `courses` SET `status` = 'deleted' WHERE id = (:course_id)"; 
+  $deleted = DB::query($course_del, array(':course_id' => $course_id));
+
+  if ($deleted) {
+    
+    $alerter = 'success';
+
+  } else{
+    $alerter = 'error';
+  }
+
+}
+
+// Select from db
+$course_sql = "SELECT `id`, `course` FROM `courses` WHERE `status` = 'active'";
 $courses = DB::query($course_sql);
+
+
+
 
 ?>
 
@@ -53,6 +74,7 @@ $courses = DB::query($course_sql);
     <!-- Bootstrap core CSS -->
 <!-- <link href="../assets/dist/css/bootstrap.css" rel="stylesheet"> -->
 <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../fontawesome/css/all.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -91,7 +113,7 @@ $courses = DB::query($course_sql);
             ?>
         <div class="alert alert-success mt-1 mr-5 ml-5">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Succesfully!</strong> added
+          <strong>Success!</strong>
         </div>
           <?php
             } elseif($alerter == "error") {
@@ -122,6 +144,7 @@ $courses = DB::query($course_sql);
             <tr>
               <th>Number</th>
               <th>Course</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -136,6 +159,13 @@ $courses = DB::query($course_sql);
               <tr>
                 <td><?= $course_count?></td>
                 <td><?= $course['course']?></td>
+                  
+                  <form action="" method="POST">
+                    <td>
+                      <input type="hidden" name="course_id" value="<?=$course['id']?>">
+                      <input type="submit" name="delete" class="btn btn-primary btn-lx" value="x">
+                    </td>
+                  </form>
               </tr>
 
              <?php
