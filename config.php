@@ -35,6 +35,11 @@ error_reporting(E_ALL);
           public static $username = "root";
           public static $password = "";
 
+          public static $host = "localhost";
+          public static $dbName = "studentspay";
+          public static $username = "root";
+          public static $password = "pa$$Word55";
+
     private static function connect() {
             $pdo = new PDO("mysql:host=".self::$host.";dbname=".self::$dbName.";charset=utf8", self::$username, self::$password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

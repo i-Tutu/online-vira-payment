@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2020 at 03:47 PM
+-- Generation Time: Sep 23, 2020 at 02:58 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -57,7 +57,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course`, `status`, `date_added`) VALUES
-(1, 'Graphic Design', 'active', '2020-09-05 11:07:01'),
+(1, 'Graphic Design', 'deleted', '2020-09-05 11:07:01'),
 (2, 'Ethical Hacking', 'active', '2020-09-05 11:07:17'),
 (3, 'Web Design', 'active', '2020-09-05 11:07:39'),
 (4, 'Networking', 'active', '2020-09-05 11:07:50'),
