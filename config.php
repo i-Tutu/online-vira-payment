@@ -30,10 +30,10 @@ error_reporting(E_ALL);
 <?php
   class DB {
 
-          public static $host = "localhost";
-          public static $dbName = "studentspay";
-          public static $username = "root";
-          public static $password = "";
+//           public static $host = "localhost";
+//           public static $dbName = "studentspay";
+//           public static $username = "root";
+//           public static $password = "";
 
           public static $host = "localhost";
           public static $dbName = "studentspay";
