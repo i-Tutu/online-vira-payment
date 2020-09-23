@@ -36,8 +36,8 @@ error_reporting(E_ALL);
 //           public static $password = "";
 
           public static $host = "localhost";
-          public static $dbName = "studentspay";
-          public static $username = "root";
+          public static $dbName = "virapayment";
+          public static $username = "ourcomunmmy_virapayment";
           public static $password = "pa$$Word55";
 
     private static function connect() {
