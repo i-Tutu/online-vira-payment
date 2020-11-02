@@ -19,6 +19,53 @@ require_once "config.php";
 $payment_code = "";
 $payment_code_err = "";
 
+$userID = $_SESSION["id"];
+// Define variables and initialize with empty values
+$payment_code = "";
+$payment_code = getReferenceCode();
+$payment_code_err = "";
+
+if (checkAccount_status()) {
+  // code...
+  header("location: course.php");
+}
+
+function getReferenceCode(){
+    global $userID;
+
+    $code = DB::query("SELECT `payment_code` from `payment` where `id_user` = '$userID'");
+    if(DB::count("SELECT `payment_code` from `payment` where `id_user` = '$userID'") > 0){
+        return $code[0][0];
+    } else{
+      $code = ref_generate();
+      DB::query("INSERT INTO `payment`(`id_user`, `payment_code`) VALUES ('$userID', '$code')");
+      getReferenceCode();
+    }
+}
+
+function checkAccount_status(){
+    global $payment_code;
+
+    $ref_pin_query = DB::query("SELECT * from `payment` where `payment_code` = '$payment_code' and `status` = 'success'");
+    if(DB::count("SELECT * from `payment` where `payment_code` = '$payment_code' and `status` = 'success'") > 0){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+function ref_generate(){
+    global $con;
+    $generated_ref = rand(1000,9999);
+    $ref_pin_query = DB::query("SELECT * from `payment` where `payment_code` = '$generated_ref'");
+    if(DB::count("SELECT * from `payment` where `payment_code` = '$generated_ref'") > 0){
+        ref_generate();
+    } else{
+        return $generated_ref;
+    }
+}
+
+
 // Processing form data when form is submitted
 if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -50,14 +97,14 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
          // Display an error message if pin doesn't exist
          $payment_code_err = "No account found with that Pin.";
        }
-      } 
+      }
 
    }
 
 }
 ?>
 
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +120,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
   <!--   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    
+
 
     <link rel="stylesheet" ref="bootstrap/welcome.css">
     <link rel="stylesheet" ref="bootstrap/site.css">
@@ -86,12 +133,12 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
               <a class="navbar-brand text-white" href="welcome.php">Payment for VIRA</a>
           </div>
           <!-- <ul class="nav navbar-nav navbar-right text-white">
-            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
             <li><a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
             </ul> -->
-            
+
             <form class="form-inline mt-2 mt-md-0">
-                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
                 <a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
           </form>
           </div>
@@ -101,7 +148,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
     <section>
         <div class="container">
         <div class="text-center mt-3">
-          <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3> 
+          <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3>
         </div>
 
             <!-- <div class="row">
@@ -143,7 +190,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                 </div>
               </div>
-             
+
             </div>
 
             <div class="row mt-5 mb-5"> <!-- style="margin-right: : 0px; margin-left: 300px;" -->
@@ -246,10 +293,10 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
               </div>
             </div>
-             
+
             </div>
 
-        
+
         <div class="row mb-5">
 
           <div class="col-md-6">
@@ -257,7 +304,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     <h2>Enter Code to continue your registration</h2>
                 </div>
             </div>
-            
+
         <div class="col-md-6">
          <div class="card mx-auto" style="max-width: 600px; margin-top: 50px; background-color: #fafafa;">
             <div class="card-body mx-auto" style="max-width: 600px;">
@@ -266,7 +313,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                             <div class="form-group <?php echo (!empty($payment_code_err)) ? 'has-error' : ''; ?>">
                                 <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>">
                                 <span class="help-block text-danger"><?php echo $payment_code_err; ?></span>
-                            </div>  
+                            </div>
                             <div class="input">
                                 <input type="submit" class="btn btn-primary" value="Send" name="pinBtn">
                             </div>
@@ -275,14 +322,14 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
             </div> <!-- card.// -->
         </div>
 
-          
+
 
         </div>
-        </div> 
+        </div>
         <!--container end.//-->
     </section>
 
-    <?php 
+    <?php
       include("resource/footer.php");
     ?>
 
@@ -290,6 +337,6 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="bootstrap/reveal.js"></script>
-    
+
 </body>
 </html>
