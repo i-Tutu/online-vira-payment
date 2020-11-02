@@ -7,11 +7,28 @@ session_start();
 //     header("location: welcome.php");
 //     exit;
 // }
+$userID = $_SESSION["id"];
+
 
 $alerter = "";
 
 // Include config file
 require_once "config.php";
+
+if (!checkAccount_status()) {
+  // code...
+  header("location: welcome.php");
+}
+
+function checkAccount_status(){
+    global $userID;
+
+    if(DB::count("SELECT * from `payment` where `id_user` = '$userID' and `status` = 'success'") > 0){
+        return true;
+    } else{
+        return false;
+    }
+}
 
 $course_sql = "SELECT `id`, `course` FROM `courses` WHERE `status` = 'active'";
 
@@ -36,7 +53,7 @@ $courses = DB::query($course_sql);
 
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
 
     <link rel="stylesheet" ref="bootstrap/welcome.css">
     <link rel="stylesheet" ref="bootstrap/site.css">
@@ -68,21 +85,21 @@ $courses = DB::query($course_sql);
               <a class="navbar-brand text-white" href="welcome.php">Payment for VIRA</a>
           </div>
           <!-- <ul class="nav navbar-nav navbar-right form-inline text-white">
-            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
             <li><a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
             </ul> -->
 
             <form class="form-inline mt-2 mt-md-0">
-                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
                 <a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
           </form>
           </div>
         </nav>
 
         <!-- Alert -->
-            <?php 
+            <?php
               if ($alerter == "success") {
-              
+
             ?>
         <div class="alert alert-success mt-1 mr-5 ml-5">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -107,9 +124,9 @@ $courses = DB::query($course_sql);
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <ul class="list-group">
             <h4><li class="list-group-item active text-center">Courses Available</li></h4>
-            <small><li class="list-group-item active text-center">Please register all courses</li></small>  
+            <small><li class="list-group-item active text-center">Please register all courses</li></small>
 
-            <?php 
+            <?php
             foreach ($courses as $course) {
             ?>
 
@@ -118,7 +135,7 @@ $courses = DB::query($course_sql);
              <label><input type="checkbox" name="optradio" value="Graphic Design"></label>
             </li>
 
-            <?php 
+            <?php
               }
             ?>
 
@@ -134,6 +151,6 @@ $courses = DB::query($course_sql);
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="bootstrap/reveal.js"></script>
-      
+
   </body>
 </html>
