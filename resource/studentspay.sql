@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2020 at 02:58 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.7
+-- Generation Time: Nov 02, 2020 at 04:59 PM
+-- Server version: 10.4.6-MariaDB
+-- PHP Version: 7.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -57,7 +58,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course`, `status`, `date_added`) VALUES
-(1, 'Graphic Design', 'deleted', '2020-09-05 11:07:01'),
+(1, 'Graphic Design', 'active', '2020-09-05 11:07:01'),
 (2, 'Ethical Hacking', 'active', '2020-09-05 11:07:17'),
 (3, 'Web Design', 'active', '2020-09-05 11:07:39'),
 (4, 'Networking', 'active', '2020-09-05 11:07:50'),
@@ -72,15 +73,11 @@ INSERT INTO `courses` (`id`, `course`, `status`, `date_added`) VALUES
 CREATE TABLE `payment` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `payment_code` int(11) NOT NULL
+  `receipient` varchar(15) NOT NULL,
+  `payment_code` int(11) NOT NULL,
+  `Status` set('issued','success','failed','cancelled') NOT NULL DEFAULT 'issued',
+  `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `payment`
---
-
-INSERT INTO `payment` (`id`, `id_user`, `payment_code`) VALUES
-(1, 7, 2333);
 
 -- --------------------------------------------------------
 
@@ -152,7 +149,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
