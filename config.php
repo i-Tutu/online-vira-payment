@@ -8,17 +8,17 @@ error_reporting(E_ALL);
 // define('DB_USERNAME', 'root');
 // define('DB_PASSWORD', '');
 // define('DB_NAME', 'studentspay');
- 
+
 // /* Attempt to connect to MySQL database */
 // $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
- 
+
 // // Check connection
 // if($link === false){
 //     die("ERROR: Could not connect. " . mysqli_connect_error());
 // }
 
 // $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
- 
+
 // // Check connection
 
 // if (!$con) {
@@ -30,15 +30,15 @@ error_reporting(E_ALL);
 <?php
   class DB {
 
-//           public static $host = "localhost";
-//           public static $dbName = "studentspay";
-//           public static $username = "root";
-//           public static $password = "";
-
           public static $host = "localhost";
-          public static $dbName = "ourcomunmmy_virapayment_db";
-          public static $username = "ourcomunmmy_virapayment";
-          public static $password = 'pa$$Word55';
+          public static $dbName = "studentspay";
+          public static $username = "root";
+          public static $password = "";
+
+          // public static $host = "localhost";
+          // public static $dbName = "ourcomunmmy_virapayment_db";
+          // public static $username = "ourcomunmmy_virapayment";
+          // public static $password = 'pa$$Word55';
 
     private static function connect() {
             $pdo = new PDO("mysql:host=".self::$host.";dbname=".self::$dbName.";charset=utf8", self::$username, self::$password);
