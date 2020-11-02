@@ -24,6 +24,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="registration.php">
+              <span data-feather="register"></span>
+              Registraion & Payment
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="stud_registered.php">
               <span data-feather="student"></span>
               Students
@@ -39,5 +45,3 @@
 
       </div>
     </nav>
-
-  
