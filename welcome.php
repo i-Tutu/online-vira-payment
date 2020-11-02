@@ -22,7 +22,7 @@ $payment_code_err = "";
 $userID = $_SESSION["id"];
 // Define variables and initialize with empty values
 $payment_code = "";
-$payment_code = getReferenceCode();
+$payment_code = "";
 $payment_code_err = "";
 
 if (checkAccount_status()) {
@@ -30,45 +30,31 @@ if (checkAccount_status()) {
   header("location: course.php");
 }
 
-function getReferenceCode(){
-    global $userID;
 
-    $code = DB::query("SELECT `payment_code` from `payment` where `id_user` = '$userID'");
-    if(DB::count("SELECT `payment_code` from `payment` where `id_user` = '$userID'") > 0){
-        return $code[0][0];
-    } else{
-      $code = ref_generate();
-      DB::query("INSERT INTO `payment`(`id_user`, `payment_code`) VALUES ('$userID', '$code')");
-      getReferenceCode();
-    }
-}
 
 function checkAccount_status(){
-    global $payment_code;
+    global $userID;
 
-    $ref_pin_query = DB::query("SELECT * from `payment` where `payment_code` = '$payment_code' and `status` = 'success'");
-    if(DB::count("SELECT * from `payment` where `payment_code` = '$payment_code' and `status` = 'success'") > 0){
+    if(DB::count("SELECT * from `payment` where `id_user` = '$userID' and `status` = 'success'") > 0){
         return true;
     } else{
         return false;
     }
 }
 
-function ref_generate(){
-    global $con;
-    $generated_ref = rand(1000,9999);
-    $ref_pin_query = DB::query("SELECT * from `payment` where `payment_code` = '$generated_ref'");
-    if(DB::count("SELECT * from `payment` where `payment_code` = '$generated_ref'") > 0){
-        ref_generate();
+function checkCode_valid($code){
+    global $payment_code;
+
+    if(DB::count("SELECT * from `payment` where `payment_code` = '$code' and `status` = 'issued'") > 0){
+        return true;
     } else{
-        return $generated_ref;
+        return false;
     }
 }
 
 
 // Processing form data when form is submitted
 if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
-
    // Check if payment_code is empty
     if(empty(trim($_POST["payment_code"]))){
         $payment_code_err = "Please enter Code.";
@@ -79,25 +65,24 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
    if(empty($payment_code_err)){
      // code...
-     $sql = "SELECT id, payment_code FROM payment WHERE  payment_code = :payment_code";
+     if (checkCode_valid($payment_code)) {
+       // code...
 
-     if (DB::query($sql, array(':payment_code' => $payment_code))) {
+       $activated = DB::query("UPDATE `payment` SET `id_user`='$userID', `status` = 'success' WHERE `payment_code`='$payment_code'");
 
-       // Prepare a select statement
-       $payInfo = DB::query($sql, array(':payment_code' => $payment_code));
-
-       // $hashed_password = $userInfo[0]['password'];
-       $payment_code = $payInfo[0]['payment_code'];
-
-       if ($payment_code) {
-
+       if ($activated) {
+         // code...
          // Redirect user to welcome page
          header("location: course.php");
        } else {
          // Display an error message if pin doesn't exist
-         $payment_code_err = "No account found with that Pin.";
+         $payment_code_err = "Account Activation Failed";
        }
-      }
+     } else {
+       // code...
+       $payment_code_err = "No account found with that Pin.";
+     }
+
 
    }
 
@@ -309,13 +294,13 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
          <div class="card mx-auto" style="max-width: 600px; margin-top: 50px; background-color: #fafafa;">
             <div class="card-body mx-auto" style="max-width: 600px;">
             <h4 class="card-title mt-3 text-center">Please Enter Code</h4>
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <form action="" method="post">
                             <div class="form-group <?php echo (!empty($payment_code_err)) ? 'has-error' : ''; ?>">
-                                <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>">
+                                <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>" placeholder="Registraion Code">
                                 <span class="help-block text-danger"><?php echo $payment_code_err; ?></span>
                             </div>
                             <div class="input">
-                                <input type="submit" class="btn btn-primary" value="Send" name="pinBtn">
+                                <input type="submit" class="btn btn-primary" value="Activate" name="pinBtn">
                             </div>
                         </form>
                 </div>
