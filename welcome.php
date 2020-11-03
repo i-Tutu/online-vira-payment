@@ -19,9 +19,42 @@ require_once "config.php";
 $payment_code = "";
 $payment_code_err = "";
 
+$userID = $_SESSION["id"];
+// Define variables and initialize with empty values
+$payment_code = "";
+$payment_code = "";
+$payment_code_err = "";
+
+if (checkAccount_status()) {
+  // code...
+  header("location: course.php");
+}
+
+
+
+function checkAccount_status(){
+    global $userID;
+
+    if(DB::count("SELECT * from `payment` where `id_user` = '$userID' and `status` = 'success'") > 0){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+function checkCode_valid($code){
+    global $payment_code;
+
+    if(DB::count("SELECT * from `payment` where `payment_code` = '$code' and `status` = 'issued'") > 0){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+
 // Processing form data when form is submitted
 if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
-
    // Check if payment_code is empty
     if(empty(trim($_POST["payment_code"]))){
         $payment_code_err = "Please enter Code.";
@@ -32,32 +65,31 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
    if(empty($payment_code_err)){
      // code...
-     $sql = "SELECT id, payment_code FROM payment WHERE  payment_code = :payment_code";
+     if (checkCode_valid($payment_code)) {
+       // code...
 
-     if (DB::query($sql, array(':payment_code' => $payment_code))) {
+       $activated = DB::query("UPDATE `payment` SET `id_user`='$userID', `status` = 'success' WHERE `payment_code`='$payment_code'");
 
-       // Prepare a select statement
-       $payInfo = DB::query($sql, array(':payment_code' => $payment_code));
-
-       // $hashed_password = $userInfo[0]['password'];
-       $payment_code = $payInfo[0]['payment_code'];
-
-       if ($payment_code) {
-
+       if ($activated) {
+         // code...
          // Redirect user to welcome page
          header("location: course.php");
        } else {
          // Display an error message if pin doesn't exist
-         $payment_code_err = "No account found with that Pin.";
+         $payment_code_err = "Account Activation Failed";
        }
-      } 
+     } else {
+       // code...
+       $payment_code_err = "No account found with that Pin.";
+     }
+
 
    }
 
 }
 ?>
 
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +105,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
 
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
   <!--   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    
+
 
     <link rel="stylesheet" ref="bootstrap/welcome.css">
     <link rel="stylesheet" ref="bootstrap/site.css">
@@ -86,12 +118,12 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
               <a class="navbar-brand text-white" href="welcome.php">Payment for VIRA</a>
           </div>
           <!-- <ul class="nav navbar-nav navbar-right text-white">
-            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+            <li><a class="text-white" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
             <li><a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
             </ul> -->
-            
+
             <form class="form-inline mt-2 mt-md-0">
-                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>  
+                <a class="text-white mr-3" href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
                 <a class="text-white" href="reset-password.php"><span class="glyphicon glyphicon-log-in text-white"></span> Reset Password</a></li>
           </form>
           </div>
@@ -101,7 +133,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
     <section>
         <div class="container">
         <div class="text-center mt-3">
-          <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3> 
+          <h3>Welcome, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h3>
         </div>
 
             <!-- <div class="row">
@@ -143,7 +175,7 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                 </div>
               </div>
-             
+
             </div>
 
             <div class="row mt-5 mb-5"> <!-- style="margin-right: : 0px; margin-left: 300px;" -->
@@ -246,10 +278,10 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
               </div>
             </div>
-             
+
             </div>
 
-        
+
         <div class="row mb-5">
 
           <div class="col-md-6">
@@ -257,32 +289,32 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                     <h2>Enter Code to continue your registration</h2>
                 </div>
             </div>
-            
+
         <div class="col-md-6">
          <div class="card mx-auto" style="max-width: 600px; margin-top: 50px; background-color: #fafafa;">
             <div class="card-body mx-auto" style="max-width: 600px;">
             <h4 class="card-title mt-3 text-center">Please Enter Code</h4>
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <form action="" method="post">
                             <div class="form-group <?php echo (!empty($payment_code_err)) ? 'has-error' : ''; ?>">
-                                <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>">
+                                <input type="text" name="payment_code" class="form-control" value="<?php echo $payment_code; ?>" placeholder="Registraion Code">
                                 <span class="help-block text-danger"><?php echo $payment_code_err; ?></span>
-                            </div>  
+                            </div>
                             <div class="input">
-                                <input type="submit" class="btn btn-primary" value="Send" name="pinBtn">
+                                <input type="submit" class="btn btn-primary" value="Activate" name="pinBtn">
                             </div>
                         </form>
                 </div>
             </div> <!-- card.// -->
         </div>
 
-          
+
 
         </div>
-        </div> 
+        </div>
         <!--container end.//-->
     </section>
 
-    <?php 
+    <?php
       include("resource/footer.php");
     ?>
 
@@ -290,6 +322,6 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="bootstrap/reveal.js"></script>
-    
+
 </body>
 </html>
