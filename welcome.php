@@ -255,25 +255,25 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
               <div class="collapse" id="collapsevodane">
                 <div class="card card-body">
                   <div>
-                    <span class="fa fa-hand-o-right"> Dial *170# </span>
+                    <span class="fa fa-hand-o-right"> Dial the Vodafone Cash short code *110# </span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Choose Option 2 "Pay Bill"</span>
+                    <span class="fa fa-hand-o-right"> Choose Send Money</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Choose General Payments (Option 6)</span>
+                    <span class="fa fa-hand-o-right"> Select Other Networks</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter deposit amount (GH¢150.00).</span>
+                    <span class="fa fa-hand-o-right"> Select the Recipient's Network - (MTN 0r AirtelTigo)</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter VIRA reference</span>
+                    <span class="fa fa-hand-o-right"> Enter the recipient's phone number</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter PIN to confirm payment</span>
+                    <span class="fa fa-hand-o-right"> Enter the amount to be sent</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> You will receive a message to code, and then enter code below to procede</span>
+                    <span class="fa fa-hand-o-right"> Confirm transaction details and enter your Vodafone Cash pin</span>
                   </div>
                 </div>
               </div>
