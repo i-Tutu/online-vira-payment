@@ -222,25 +222,25 @@ if(isset($_POST['pinBtn']) && $_SERVER["REQUEST_METHOD"] == "POST"){
               <div class="collapse" id="collapseairtel">
                 <div class="card card-body">
                   <div>
-                    <span class="fa fa-hand-o-right"> Dial *170# </span>
+                    <span class="fa fa-hand-o-right"> Dial the Short code - *500# for Airtel Subscribers or *110# for Tigo Subscribers </span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Choose Option 2 "Pay Bill"</span>
+                    <span class="fa fa-hand-o-right"> Choose Send Money</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Choose General Payments (Option 6)</span>
+                    <span class="fa fa-hand-o-right"> Select Other Networks</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter deposit amount (GH¢150.00).</span>
+                    <span class="fa fa-hand-o-right"> Select the Recipient's Network - (MTN or Vodafone)</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter VIRA reference</span>
+                    <span class="fa fa-hand-o-right"> Enter the recipient's phone number in full</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> Enter PIN to confirm payment</span>
+                    <span class="fa fa-hand-o-right"> Enter the amount you wish to send</span>
                   </div>
                   <div>
-                    <span class="fa fa-hand-o-right"> You will receive a message to code, and then enter code below to procede</span>
+                    <span class="fa fa-hand-o-right"> Confirm transaction details and enter your Pin to complete the transaction</span>
                   </div>
                 </div>
               </div>
