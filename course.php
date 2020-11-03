@@ -79,7 +79,9 @@ $courses = DB::query($course_sql);
           </div>
         </nav>
 
-        <!-- Alert -->
+<main role="main" class="container mt-5">
+
+  <!-- Alert -->
             <?php 
               if ($alerter == "success") {
               
@@ -93,7 +95,6 @@ $courses = DB::query($course_sql);
           ?>
 
 
-<main role="main" class="container mt-5">
   <div class="jumbotron justify-content-between align-items-end">
 
     <div class="col-sm-6 mb-3">
@@ -107,7 +108,8 @@ $courses = DB::query($course_sql);
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <ul class="list-group">
             <h4><li class="list-group-item active text-center">Courses Available</li></h4>
-            <small><li class="list-group-item active text-center">Please register all courses</li></small>  
+            <!-- <small><li class="list-group-item active text-center">Please register all courses</li></small> -->  
+            <small><li id="demo" class="list-group-item active text-center">Please register all courses</li></small> 
 
             <?php 
             foreach ($courses as $course) {
@@ -115,7 +117,7 @@ $courses = DB::query($course_sql);
 
             <li class="list-group-item d-flex justify-content-between align-items-center"><?= $course['course']?>
               <!-- <a href="#" id="add1" class="badge badge-primary">Add</a> -->
-             <label><input type="checkbox" name="optradio" value="Graphic Design"></label>
+             <label><input type="checkbox" name="optradio" required="checkbox"></label>
             </li>
 
             <?php 
@@ -123,10 +125,18 @@ $courses = DB::query($course_sql);
             ?>
 
           </ul>
-        <input type="submit" class="btn btn-primary text-center mt-5" name="submit" value="Confirm">
+        <!-- <input type="submit" class="btn btn-primary text-center mt-5" name="submit" value="Confirm"> -->
+        <input type="button" class="btn btn-primary text-center mt-5" onclick="getFunction()" name="button" value="Confirm">
     </form>
   </div>
 </main>
+
+
+<script>
+function getFunction() {
+    document.getElementById("demo").innerHTML = "<h3><b>Succesfully Registered.</b></h3>";
+}
+</script>
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script> -->
 
